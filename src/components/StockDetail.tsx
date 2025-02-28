@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import {
   LineChart,
   Line,
@@ -32,6 +32,19 @@ export default function StockDetail({ stock, onClose, onTrade }: StockDetailProp
   const [priceHistory, setPriceHistory] = useState<PriceData[]>([])
   const [loading, setLoading] = useState(false)
 
+  const fetchPriceHistory = useCallback(async () => {
+    try {
+      const response = await fetch(`/api/stocks/${stock.id}/history`)
+      if (response.ok) {
+        const data = await response.json()
+        setPriceHistory(data)
+      }
+    } catch {
+      console.error('Failed to fetch price history')
+      setPriceHistory([{ timestamp: Date.now(), price: stock.current_price }])
+    }
+  }, [stock.id, stock.current_price])
+
   useEffect(() => {
     fetchPriceHistory()
     
@@ -42,26 +55,6 @@ export default function StockDetail({ stock, onClose, onTrade }: StockDetailProp
       body: JSON.stringify({ type: 'view' })
     }).catch(console.error)
   }, [stock.id])
-
-  const fetchPriceHistory = async () => {
-    try {
-      setLoading(true)
-      const response = await fetch(`/api/stocks/${stock.id}/history`)
-      if (!response.ok) throw new Error('Failed to fetch price history')
-      
-      const data = await response.json()
-      setPriceHistory(data)
-    } catch (error) {
-      console.error('Error fetching price history:', error)
-      // Set a fallback single data point if fetch fails
-      setPriceHistory([{
-        timestamp: Date.now(),
-        price: stock.current_price
-      }])
-    } finally {
-      setLoading(false)
-    }
-  }
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center">

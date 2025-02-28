@@ -1,6 +1,5 @@
-import NextAuth, { DefaultSession, NextAuthOptions } from 'next-auth'
+import NextAuth, { DefaultSession, NextAuthOptions, Account, Profile, User } from 'next-auth'
 import TwitchProvider from 'next-auth/providers/twitch'
-import { JWT } from 'next-auth/jwt'
 import { sql } from '@/lib/db'
 
 interface CustomSession extends DefaultSession {
@@ -20,7 +19,11 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async signIn({ user, account }: { user: any; account: any }) {
+    async signIn({ user, account, _profile }: {
+      user: User,
+      account: Account | null,
+      _profile?: Profile
+    }) {
       if (account?.provider === 'twitch') {
         try {
           // Check if this is the first user ever

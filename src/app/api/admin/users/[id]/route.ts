@@ -1,10 +1,13 @@
 import { sql } from '@/lib/db'
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 
-export async function PUT(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+interface Params {
+  params: {
+    id: string
+  }
+}
+
+export async function PUT(request: NextRequest, { params }: Params) {
   try {
     const userId = parseInt(params.id)
     const { username, balance, role } = await request.json()
@@ -20,7 +23,7 @@ export async function PUT(
     `
 
     return NextResponse.json(updatedUser)
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: 'Failed to update user' },
       { status: 500 }

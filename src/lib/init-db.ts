@@ -1,7 +1,7 @@
-import * as fs from 'fs'
-import * as path from 'path'
+// import { fs } from 'fs'
+// import { path } from 'path'
+// import { sql } from '@/lib/db'
 import { neon } from '@neondatabase/serverless'
-import { sql } from '@/lib/db'
 
 const DATABASE_URL = "postgresql://weenstocks_owner:npg_7zRe1wTSZbDl@ep-square-thunder-a5226a70-pooler.us-east-2.aws.neon.tech/weenstocks?sslmode=require"
 

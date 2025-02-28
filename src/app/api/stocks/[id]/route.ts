@@ -20,7 +20,7 @@ export async function PUT(
     `
 
     return NextResponse.json(updatedStock)
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: 'Failed to update stock' },
       { status: 500 }
@@ -42,7 +42,7 @@ export async function DELETE(
     `
 
     return NextResponse.json({ success: true })
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: 'Failed to delete stock' },
       { status: 500 }

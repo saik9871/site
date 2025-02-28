@@ -21,7 +21,7 @@ export async function POST(request: Request) {
     `
 
     return NextResponse.json(result[0])
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error creating stock:', error)
     return NextResponse.json(
       { error: 'Failed to create stock' },

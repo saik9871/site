@@ -37,8 +37,8 @@ export default function PredictionsPage() {
       } else {
         console.error('Failed to fetch predictions:', await response.text())
       }
-    } catch (error) {
-      console.error('Error fetching predictions:', error)
+    } catch {
+      console.error('Failed to fetch predictions')
     }
   }
 
@@ -71,7 +71,7 @@ export default function PredictionsPage() {
       // Clear bet amount
       setSelectedAmount(prev => ({ ...prev, [predictionId]: '' }))
       alert('Bet placed successfully!')
-    } catch (error) {
+    } catch {
       alert('Failed to place bet')
     }
   }
@@ -85,6 +85,30 @@ export default function PredictionsPage() {
     return {
       active: preds.filter(p => !p.resolved),
       resolved: preds.filter(p => p.resolved)
+    }
+  }
+
+  const resolvePrediction = async (predictionId: number, winningOption: string) => {
+    try {
+      console.log('Attempting to resolve prediction:', { predictionId, winningOption })
+      
+      const response = await fetch('/api/predictions/resolve', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ predictionId, winningOption })
+      })
+
+      const data = await response.json()
+      console.log('Server response:', data)
+      
+      if (!response.ok) {
+        throw new Error(data.details || data.error || 'Failed to resolve prediction')
+      }
+      
+      alert('Prediction resolved successfully!')
+      await fetchPredictions()
+    } catch {
+      alert('Error resolving prediction')
     }
   }
 

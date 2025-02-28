@@ -43,8 +43,8 @@ export default function AdminPredictionsPage() {
       } else {
         console.error('Failed to fetch predictions:', await response.text())
       }
-    } catch (error) {
-      console.error('Error fetching predictions:', error)
+    } catch {
+      console.error('Failed to fetch predictions')
     }
   }
 
