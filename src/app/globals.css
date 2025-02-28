@@ -1,24 +1,281 @@
-@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @theme {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
+    /* Design System */
+    --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    
+    /* Colors */
     --background: #0a0a0a;
-    --foreground: #ededed;
+    --card: #1a1a1a;
+    --card-hover: #242424;
+    --accent: #00ffff;
+    --accent-hover: #33ffff;
+    --border: rgba(0, 255, 255, 0.1);
+    --text-primary: #ffffff;
+    --text-secondary: #a0a0a0;
+    --secondary-bg: #1a1a1a;
+    --foreground: #F3F4F6;
+    --card-bg: #1F2937;
+    --card-border: #374151;
+    --primary: #8B5CF6;
+    --primary-hover: #7C3AED;
+    
+    /* Spacing */
+    --container-padding: 2rem;
+    --card-padding: 1.5rem;
+    --border-radius: 1rem;
+  }
+
+  body {
+    @apply bg-[var(--background)] text-[var(--text-primary)];
+    font-family: var(--font-primary);
+    -webkit-font-smoothing: antialiased;
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  .card {
+    @apply bg-card border border-[var(--border)] rounded-2xl p-6 transition-all duration-300 backdrop-blur-md;
+  }
+
+  .card:hover {
+    @apply bg-[var(--card-hover)] -translate-y-1;
+    box-shadow: 0 8px 30px rgba(0, 255, 255, 0.1);
+  }
+
+  .btn {
+    @apply rounded-lg font-medium transition-all duration-200 py-2 px-4 bg-gradient-to-r from-accent to-accent-hover;
+  }
+
+  .input {
+    @apply bg-card border border-[var(--border)] rounded-lg p-4 transition-all duration-200;
+  }
+
+  .table-modern {
+    @apply w-full;
+  }
+
+  .table-modern th {
+    @apply p-6 text-left text-sm font-medium text-[var(--text-secondary)];
+  }
+
+  .table-modern td {
+    @apply p-6 border-t border-[var(--border)];
+  }
+
+  .nav-link {
+    @apply flex items-center p-4 rounded-lg transition-all duration-200;
+  }
+
+  .nav-link:hover {
+    @apply bg-[var(--card-hover)] text-[var(--accent)];
+  }
+}
+
+@layer utilities {
+  .fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from { 
+      opacity: 0; 
+      transform: translateY(10px); 
+    }
+    to { 
+      opacity: 1; 
+      transform: translateY(0); 
+    }
+  }
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* Modern Card Styling */
+.card {
+  @apply bg-[var(--card)] border border-[var(--border)] rounded-xl;
+  backdrop-filter: blur(12px);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  @apply bg-[var(--card-hover)];
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 255, 255, 0.1);
+}
+
+/* Modern Button Styling */
+.btn {
+  @apply px-4 py-2 rounded-lg font-medium transition-all duration-200;
+  background: linear-gradient(135deg, var(--accent), rgba(0, 255, 255, 0.8));
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(0, 255, 255, 0.2);
+}
+
+/* Hover Effects */
+.hover-glow {
+  transition: all 0.3s ease;
+}
+
+.hover-glow:hover {
+  text-shadow: 0 0 8px var(--accent);
+  color: var(--accent);
+}
+
+/* Table Styling */
+.modern-table {
+  @apply w-full border-collapse;
+}
+
+.modern-table th {
+  @apply px-6 py-3 text-left text-sm font-medium text-[var(--text-secondary)];
+}
+
+.modern-table td {
+  @apply px-6 py-4 border-t border-[var(--border)];
+}
+
+.modern-table tr:hover {
+  @apply bg-[var(--card-hover)] transition-colors duration-200;
+}
+
+/* Input Styling */
+.modern-input {
+  @apply bg-[var(--card)] border border-[var(--border)] rounded-lg px-4 py-2;
+  transition: all 0.2s ease;
+}
+
+.modern-input:focus {
+  @apply outline-none border-[var(--accent)];
+  box-shadow: 0 0 0 2px rgba(0, 255, 255, 0.1);
+}
+
+/* Dark theme overrides */
+.bg-white {
+  background-color: var(--card-bg) !important;
+  border: 1px solid var(--card-border);
+}
+
+.text-gray-500 {
+  color: #9CA3AF !important;
+}
+
+.text-gray-600 {
+  color: #D1D5DB !important;
+}
+
+.text-gray-700 {
+  color: #E5E7EB !important;
+}
+
+.bg-gray-50 {
+  background-color: #1F2937 !important;
+}
+
+.bg-gray-100 {
+  background-color: #111827 !important;
+}
+
+.hover\:bg-gray-50:hover {
+  background-color: #374151 !important;
+}
+
+.border {
+  border-color: var(--card-border) !important;
+}
+
+/* Update modal styles */
+.fixed.inset-0.bg-black.bg-opacity-50 {
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+/* Chart customization */
+.recharts-cartesian-grid-horizontal line,
+.recharts-cartesian-grid-vertical line {
+  stroke: #374151;
+}
+
+.recharts-text {
+  fill: #9CA3AF;
+}
+
+/* Updated component styles */
+.bg-card {
+  background-color: var(--secondary-bg);
+  border: 1px solid rgba(0, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+}
+
+/* Animated gradient border */
+.gradient-border {
+  position: relative;
+  background: var(--secondary-bg);
+  border-radius: 0.5rem;
+}
+
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  bottom: -1px;
+  background: linear-gradient(45deg, #00ffff20, transparent, #00ffff40);
+  border-radius: 0.5rem;
+  z-index: -1;
+  animation: borderGlow 3s ease infinite;
+}
+
+@keyframes borderGlow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Price change animations */
+.price-up {
+  animation: priceUp 1s ease;
+  color: #00ff00;
+}
+
+.price-down {
+  animation: priceDown 1s ease;
+  color: #ff0000;
+}
+
+@keyframes priceUp {
+  0% { background-color: rgba(0, 255, 0, 0.2); }
+  100% { background-color: transparent; }
+}
+
+@keyframes priceDown {
+  0% { background-color: rgba(255, 0, 0, 0.2); }
+  100% { background-color: transparent; }
+}
+
+/* Loading animation */
+.loading-pulse {
+  animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
 }
