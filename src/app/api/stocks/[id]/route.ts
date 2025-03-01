@@ -1,12 +1,18 @@
 import { sql } from '@/lib/db'
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
+
+interface RouteParams {
+  params: {
+    id: string
+  }
+}
 
 export async function PUT(
-  request: Request,
-  { params }: { params: { id: string } }
+  request: NextRequest,
+  context: RouteParams
 ) {
   try {
-    const stockId = parseInt(params.id)
+    const stockId = parseInt(context.params.id)
     const { name, current_price, total_supply } = await request.json()
 
     const [updatedStock] = await sql`
@@ -29,11 +35,11 @@ export async function PUT(
 }
 
 export async function DELETE(
-  request: Request,
-  { params }: { params: { id: string } }
+  request: NextRequest,
+  context: RouteParams
 ) {
   try {
-    const stockId = parseInt(params.id)
+    const stockId = parseInt(context.params.id)
 
     // Delete the stock
     await sql`
